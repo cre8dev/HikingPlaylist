@@ -1,0 +1,31 @@
+body {
+    background: url("./../images/hiking-main.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    font-family: fantasy;
+}
+
+.container {
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1 {
+    color: white;
+}
+
+#search {
+    margin-top: 100px;
+    text-align: center;
+    width: 200px;
+}
+
+#trail-show {
+    width: 100%;
+    background: lightgray;
+}
+
+.image {
+    width: 350px;
+    height: 300px;
+}
