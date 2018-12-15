@@ -12,28 +12,30 @@ $(document).ready(function () {
 
     firebase.initializeApp(config);
 
-   
-    $(".container").on("click", ".btn", function() {
-    var zip = $("#search").val().trim();
-    var lat;
-    var lng;
 
-    var geocodingUrl = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
-    var googleAPIkey = "AIzaSyBcLDPYV93T5_XF3TdfXBRANb9N1wkYn2k";
+    $(".container").on("click", ".btn", function () {
+        var zip = $("#search").val().trim();
+        var lat;
+        var lng;
 
-    $.ajax({
-        type: "GET",
-        url: geocodingUrl + zip + "&key=" + googleAPIkey,
-        dataType: "json"
-    }).then(function (data) {
-        lat = data.results[0].geometry.location.lat;
-        lng = data.results[0].geometry.location.lng;
+        var geocodingUrl = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
+        var googleAPIkey = "AIzaSyBcLDPYV93T5_XF3TdfXBRANb9N1wkYn2k";
 
-        console.log("Latitude : " + lat);
-        console.log("Longitude : " + lng);
+        $.ajax({
+            type: "GET",
+            url: geocodingUrl + zip + "&key=" + googleAPIkey,
+            dataType: "json"
+        }).then(function (data) {
+            lat = data.results[0].geometry.location.lat;
+            lng = data.results[0].geometry.location.lng;
 
-        hikeApi(lat, lng);
-    });
+            console.log("Latitude : " + lat);
+            console.log("Longitude : " + lng);
+
+            $("header, section").empty();
+
+            hikeApi(lat, lng);
+        });
     });
 
     function hikeApi(lat, lon) {
@@ -68,7 +70,7 @@ $(document).ready(function () {
                 imgLink.append(image);
 
                 trailDiv.append(imgLink);
-                trailDiv.append(n,l,c,d,le,s);
+                trailDiv.append(n, l, c, d, le, s);
                 $("#trail-show").prepend(trailDiv);
             }
         })
