@@ -12,10 +12,9 @@ $(document).ready(function () {
 
     firebase.initializeApp(config);
 
-    var zip = $("#search").val().trim();
-
+   
     $(".container").on("click", ".btn", function() {
-
+    var zip = $("#search").val().trim();
     var lat;
     var lng;
 
@@ -33,15 +32,13 @@ $(document).ready(function () {
         console.log("Latitude : " + lat);
         console.log("Longitude : " + lng);
 
-        hikeApi();
+        hikeApi(lat, lng);
     });
     });
 
-    function hikeApi() {
+    function hikeApi(lat, lon) {
 
         var trailKey = "200396711-e807f4a3a7208434b577326e19600e21";
-        var lat = "";
-        var lon = "";
         var queryURL = "https://www.hikingproject.com/data/get-trails?" + "lat=" + lat + "&lon=" + lon + "&maxDistance=10" + "&key=" + trailKey;
 
         $.ajax({
