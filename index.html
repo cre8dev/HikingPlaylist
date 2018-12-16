@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="./assets/css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
@@ -20,23 +21,38 @@
     <div class="container">
 
         <header class="title">
-            <h1>Enter your hiking destination:</h1>
+            <h2>Hiking Playlist Generator</h2>
         </header>
+        <h3 class="instructions">
+            <h3>Enter Your Hiking Zipcode:
+            </h3>
 
-        <section id="search-section">
+            <section id="search-section">
                 <input id="search" type="search" required>
-            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-                <i class="material-icons right">send</i>
-            </button>
+                <button class="btn waves-effect waves-light" id="button" type="submit" name="action">Find Trails
+                    <i class="material-icons right">send</i>
+                </button>
 
-        </section>
-        <div id="trail-show">
+            </section>
+            <div id="trail-show">
 
-        </div>
-
+            </div>
     </div>
 
+    <footer class="page-footer" id="footer">
+        <div class="footer-copyright" id="footer-copy">
+            <div class="container">
+                © Copyright 2018
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
     <script src="./assets/javascript/app.js"></script>
+
+
 </body>
 
 </html>
