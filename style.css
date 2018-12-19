@@ -1,0 +1,91 @@
+@import url(https://fonts.googleapis.com/css?family=Libre+Franklin);
+
+html { background: url(../images/hiking-main.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+body {
+    font-family: 'Libre Franklin', sans-serif;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.container {
+    margin: 0 auto;
+    text-align: left;
+}
+
+h1 {
+    color: white;
+}
+
+#search {
+    margin-top: 100px;
+    text-align: center;
+    width: 200px;
+}
+
+#trail-show {
+    width: 100%;
+    background: lightgray;
+}
+
+.image {
+    width: 350px;
+    height: 300px;
+}
+
+.title, h2 {
+    color: rgb(58, 61, 58) !important;
+    font-size: 10px;
+ 
+}
+
+.instructions, h3 {
+    color: rgb(32, 32, 32);
+}
+
+#button {
+   background-color: rgb(73, 87, 77);
+}
+
+#footer{
+    margin-top: 100%;
+    padding-top: 0;
+}
+
+#footer-copy {
+    color: rgb(31, 31, 31);
+    background-color: rgb(62, 73, 61);
+    padding: 4%;
+}
+
+#trail-show {
+    background-color: rgb(236, 236, 228);
+    text-align: center;
+    margin-top: 20px;
+}
+
+#close {
+	position: relative;
+	left: -320px;
+	align-items: left;
+}
+
+@media screen and (max-width: 860px) {
+    .instructions, h3{
+        max-width: 300px;
+}
+
+}
+
+@media screen and (max-width: 560px) {
+  .instructions, h3 {
+      margin-top: 200px;
+  }
+  .title, h2 {
+      margin-top: -20px;
+  }
+}
