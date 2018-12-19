@@ -2,50 +2,105 @@ $(document).ready(function () {
 
     // Initialize Firebase
     var config = {
-        apiKey: "",
-        authDomain: "",
-        databaseURL: "",
-        projectId: "",
-        storageBucket: "",
-        messagingSenderId: ""
+        apiKey: "AIzaSyBxDrdk8o6TGy3lVqgwyQz2jIz6zuBf-Qk",
+        authDomain: "aka-joe-project.firebaseapp.com",
+        databaseURL: "https://aka-joe-project.firebaseio.com",
+        projectId: "aka-joe-project",
+        storageBucket: "aka-joe-project.appspot.com",
+        messagingSenderId: "682758063555"
     };
-
     firebase.initializeApp(config);
-	
-	$("#modal1").hide();
 
-    $(".container").on("click", ".btn", function () {
-        var zip = $("#search").val().trim();
-		var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
-		if (isValidZip === true){
-		$("#modal1").hide();
-        var lat;
-        var lng;
+    // Create a variable to reference the database.
+    var database = firebase.database();
+    var favID = [];
+    var favCounter = [];
+    var favorite = [];
 
-        var geocodingUrl = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
-        var googleAPIkey = "AIzaSyBcLDPYV93T5_XF3TdfXBRANb9N1wkYn2k";
+    // Firebase watcher + initial loader
+    database.ref().on("value", function (snapshot) {
+        if (snapshot.exists()) {
+            // storing the snapshot.val() in a variable for convenience
+            favID = snapshot.val().ID;
+            favCounter = snapshot.val().counter;
+        };
+        // Handle the errors
+    }, function (errorObject) {
+        console.log("Errors handled: " + errorObject.code);
+    });
 
-        $.ajax({
-            type: "GET",
-            url: geocodingUrl + zip + "&key=" + googleAPIkey,
-            dataType: "json"
-        }).then(function (data) {
-            lat = data.results[0].geometry.location.lat;
-            lng = data.results[0].geometry.location.lng;
+    $(document).on("click", ".favBtn", function () {
 
-            console.log("Latitude : " + lat);
-            console.log("Longitude : " + lng);
+        var newID = $(this).attr("value");
+        var position = favID.indexOf(newID);
 
-            $("header, section").empty();
+        if (position === -1) {
+            favorite.push(newID);
+            favID.push(newID);
+            favCounter.push(1);
+            $(this).text("Liked!");
+            $("#" + newID).text("1 people liked this trail")
+        } else {
+            var position2 = favorite.indexOf(newID);
+            if (position2 === -1) {
+                favorite.push(newID);
+                favCounter[position]++;
+                $(this).text("Liked!");
+                $("#" + newID).text(favCounter[position] + " people liked this trail");
+            } else {
+                favorite.splice(position2, 1);
+                favCounter[position]--;
+                $(this).text("Like");
+                $("#" + newID).text(favCounter[position] + " people liked this trail");
+                if (favCounter[position] === 0) {
+                    favID.splice(position, 1);
+                    favCounter.splice(position, 1);
+                    $("#" + newID).empty();
+                };
+            };
+        };
 
-            hikeApi(lat, lng);
+        // Code for "Setting values in the database"
+        database.ref().set({
+            ID: favID,
+            counter: favCounter
         });
-			
-		}
-		else {
-			$("#modal1").show() 
-		}
-		
+    });
+
+    $("#modal1").hide();
+
+    $(document).on("click", ".searchBtn", function () {
+        var zip = $("#search").val().trim();
+
+        var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
+        if (isValidZip === true) {
+            $("#modal1").hide();
+
+            var lat;
+            var lng;
+
+            var geocodingUrl = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
+            var googleAPIkey = "AIzaSyBcLDPYV93T5_XF3TdfXBRANb9N1wkYn2k";
+
+            $.ajax({
+                type: "GET",
+                url: geocodingUrl + zip + "&key=" + googleAPIkey,
+                dataType: "json"
+            }).then(function (data) {
+                lat = data.results[0].geometry.location.lat;
+                lng = data.results[0].geometry.location.lng;
+
+                console.log("Latitude : " + lat);
+                console.log("Longitude : " + lng);
+
+                $("header, section").empty();
+
+                hikeApi(lat, lng);
+            });
+        }
+        else {
+            $("#modal1").show()
+        }
     });
 
     function hikeApi(lat, lon) {
@@ -71,8 +126,23 @@ $(document).ready(function () {
                 var le = $("<p>").text("Length: " + results[i].length);
                 var s = $("<p>").text("Stars: " + results[i].stars);
 
+                var newID = results[i].id.toString();
+
+                var b = $("<div>").attr({ class: "btn favBtn", value: results[i].id })
+                if (favorite.indexOf(newID) === -1) {
+                    b.text("Like")
+                } else {
+                    b.text("Liked!")
+                };
+
+                var f = $("<div>").attr("id", results[i].id);
+                var position = favID.indexOf(newID);
+                if (position != -1) {
+                    f.text(favCounter[position] + " people liked this trail")
+                };
+
                 var imgLink = $("<a>");
-                imgLink.attr("href", results[i].url);
+                imgLink.attr({ href: results[i].url, target: "_blank" });
 
                 var image = $("<img>");
                 image.attr("src", results[i].imgSmallMed);
@@ -80,7 +150,7 @@ $(document).ready(function () {
                 imgLink.append(image);
 
                 trailDiv.append(imgLink);
-                trailDiv.append(n, l, c, d, le, s);
+                trailDiv.append(n, l, c, d, le, s, b, f);
                 $("#trail-show").prepend(trailDiv);
             }
         })
