@@ -1,17 +1,11 @@
-body {
-    background: url("./../images/hiking-main.jpg");
-    background-repeat: no-repeat;
-    background-size: 100%;
-    font-family: fantasy;
+html { background: url(../images/hiking-main.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    background-size: cover;
 }
 
 .container {
     margin: 0 auto;
     text-align: center;
-}
-
-h1 {
-    color: white;
 }
 
 #search {

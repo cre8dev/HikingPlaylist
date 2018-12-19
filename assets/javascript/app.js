@@ -2,18 +2,72 @@ $(document).ready(function () {
 
     // Initialize Firebase
     var config = {
-        apiKey: "",
-        authDomain: "",
-        databaseURL: "",
-        projectId: "",
-        storageBucket: "",
-        messagingSenderId: ""
+        apiKey: "AIzaSyBxDrdk8o6TGy3lVqgwyQz2jIz6zuBf-Qk",
+        authDomain: "aka-joe-project.firebaseapp.com",
+        databaseURL: "https://aka-joe-project.firebaseio.com",
+        projectId: "aka-joe-project",
+        storageBucket: "aka-joe-project.appspot.com",
+        messagingSenderId: "682758063555"
     };
-
     firebase.initializeApp(config);
 
+    // Create a variable to reference the database.
+    var database = firebase.database();
+    var favID = [];
+    var favCounter = [];
+    var favorite = [];
 
-    $(".container").on("click", ".btn", function () {
+    // Firebase watcher + initial loader
+    database.ref().on("value", function (snapshot) {
+        if (snapshot.exists()) {
+            // storing the snapshot.val() in a variable for convenience
+            favID = snapshot.val().ID;
+            favCounter = snapshot.val().counter;
+        };
+        // Handle the errors
+    }, function (errorObject) {
+        console.log("Errors handled: " + errorObject.code);
+    });
+
+    $(document).on("click", ".favBtn", function () {
+
+        var newID = $(this).attr("value");
+        var position = favID.indexOf(newID);
+
+        if (position === -1) {
+            favorite.push(newID);
+            favID.push(newID);
+            favCounter.push(1);
+            $(this).text("Liked!");
+            $("#" + newID).text("1 people liked this trail")
+        } else {
+            var position2 = favorite.indexOf(newID);
+            if (position2 === -1) {
+                favorite.push(newID);
+                favCounter[position]++;
+                $(this).text("Liked!");
+                $("#" + newID).text(favCounter[position] + " people liked this trail");
+            } else {
+                favorite.splice(position2, 1);
+                favCounter[position]--;
+                $(this).text("Like");
+                $("#" + newID).text(favCounter[position] + " people liked this trail");
+                if (favCounter[position] === 0) {
+                    favID.splice(position, 1);
+                    favCounter.splice(position, 1);
+                    $("#" + newID).empty();
+                };
+            };
+        };
+
+        // Code for "Setting values in the database"
+        database.ref().set({
+            ID: favID,
+            counter: favCounter
+        });
+    });
+
+    $(document).on("click", ".searchBtn", function () {
         var zip = $("#search").val().trim();
         var lat;
         var lng;
@@ -61,8 +115,23 @@ $(document).ready(function () {
                 var le = $("<p>").text("Length: " + results[i].length);
                 var s = $("<p>").text("Stars: " + results[i].stars);
 
+                var newID = results[i].id.toString();
+
+                var b = $("<div>").attr({ class: "btn favBtn", value: results[i].id })
+                if (favorite.indexOf(newID) === -1) {
+                    b.text("Like")
+                } else {
+                    b.text("Liked!")
+                };
+
+                var f = $("<div>").attr("id", results[i].id);
+                var position = favID.indexOf(newID);
+                if (position != -1) {
+                    f.text(favCounter[position] + " people liked this trail")
+                };
+
                 var imgLink = $("<a>");
-                imgLink.attr("href", results[i].url);
+                imgLink.attr({ href: results[i].url, target: "_blank" });
 
                 var image = $("<img>");
                 image.attr("src", results[i].imgSmallMed);
@@ -70,7 +139,7 @@ $(document).ready(function () {
                 imgLink.append(image);
 
                 trailDiv.append(imgLink);
-                trailDiv.append(n, l, c, d, le, s);
+                trailDiv.append(n, l, c, d, le, s, b, f);
                 $("#trail-show").prepend(trailDiv);
             }
         })
