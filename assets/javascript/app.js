@@ -115,6 +115,8 @@ $(document).ready(function () {
                 var le = $("<p>").text("Length: " + results[i].length);
                 var s = $("<p>").text("Stars: " + results[i].stars);
 
+                var button = $("<button id='gen'>Generate Playlist</button>");
+
                 var newID = results[i].id.toString();
 
                 var b = $("<div>").attr({ class: "btn favBtn", value: results[i].id })
@@ -140,9 +142,55 @@ $(document).ready(function () {
 
                 trailDiv.append(imgLink);
                 trailDiv.append(n, l, c, d, le, s, b, f);
+                trailDiv.append(button);
                 $("#trail-show").prepend(trailDiv);
             }
         })
     }
+
+    $(".container").on("click", "#gen", function itunesAPI() {
+
+        var QueryURL = "https://itunes.apple.com/search";
+
+        $.ajax({
+            url: QueryURL,
+            crossDomain: true,
+            dataType: 'json',
+            data: {
+                term: 'random',
+                lang: 'en_us',
+                entity: 'mix, song',
+                limit: 5,
+                explicit: 'no',
+            },
+            method: 'GET'
+        }).then(function (data) {
+            playList = data.results;
+            console.log(playList);
+    
+            var hard = $("<h6>").text("Recomended Songs for Hard Trails")
+    
+            for (var i = 0; i < data.results.length; i++) {
+                var musicDiv = $("<div class='music'>");
+                var download = $("<a>").text("Full Song!")
+                download.attr("href", playList[i].trackViewUrl);
+                // var preview = $("<a class='link'>").attr("href", playList[i].previewUrl).text("Song Preview");
+                var name = $("<p>").text(playList[i].trackName);
+                var x = document.createElement("AUDIO");
+    
+                if (x.canPlayType("audio/mpeg")) {
+                    x.setAttribute("src", playList[i].previewUrl);
+                } else {
+                    x.setAttribute("src", playList[i].previewUrl);
+                }
+    
+                x.setAttribute("controls", "controls");
+    
+                musicDiv.append(name, x);
+                musicDiv.prepend(hard, download);
+                $("#music-show").prepend(musicDiv);
+            }
+        });
+    });
 
 });
