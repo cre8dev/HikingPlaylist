@@ -16,7 +16,7 @@ $(document).ready(function () {
     var favID = [];
     var favCounter = [];
     var favorite = [];
-
+	
     // Firebase watcher + initial loader
     database.ref().on("value", function (snapshot) {
         if (snapshot.exists()) {
@@ -28,7 +28,43 @@ $(document).ready(function () {
     }, function (errorObject) {
         console.log("Errors handled: " + errorObject.code);
     });
-
+	
+	var easyPlaylist ='<iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/out-walking/pl.53385af769204a0ab843ce245f2fb293"></iframe>';
+	
+	var mediumPlaylist = '<iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/pure-workout/pl.ad0ee1557e3e4feba314fd70f7982766?app=music"></iframe>';
+	
+	var hardPlaylist = '<iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/power-workout/pl.edc6571c1a5b49b1a8513673deaf18f5"></iframe>';
+	
+	//Generate Playlist On Click
+	$(document).on("click", "#gen", function () {
+		console.log(this.value);
+		$("#gen").show();
+		if (this.value === "green" || this.value === "greenBlue" ) {
+			
+			$("#gen").html(easyPlaylist);
+			var close = $("<div> Close Playlist</div>").attr({id:"close", class: "btn closeBtn"})
+			$("#gen").prepend(close);
+			
+		} else if (this.value === "blue"){
+			
+			$("#gen").html(mediumPlaylist);
+			var close = $("<div> Close Playlist</div>").attr({id:"close", class: "btn closeBtn"})
+			$("#gen").prepend(close);
+	} else {
+		
+		$("#gen").html(hardPlaylist);
+		var close = $("<div> Close Playlist</div>").attr({id:"close", class: "btn closeBtn"})
+		$("#gen").prepend(close);
+		
+	}
+	});
+   
+	//Closing Playlist Button
+	$(document).on("click", "#close", function () {
+		
+		$("#gen").hide();
+		
+	});
     $(document).on("click", ".favBtn", function () {
 
         var newID = $(this).attr("value");
@@ -67,40 +103,29 @@ $(document).ready(function () {
         });
     });
 
-    $("#modal1").hide();
-
     $(document).on("click", ".searchBtn", function () {
         var zip = $("#search").val().trim();
+        var lat;
+        var lng;
 
-        var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
-        if (isValidZip === true) {
-            $("#modal1").hide();
+        var geocodingUrl = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
+        var googleAPIkey = "AIzaSyBcLDPYV93T5_XF3TdfXBRANb9N1wkYn2k";
 
-            var lat;
-            var lng;
+        $.ajax({
+            type: "GET",
+            url: geocodingUrl + zip + "&key=" + googleAPIkey,
+            dataType: "json"
+        }).then(function (data) {
+            lat = data.results[0].geometry.location.lat;
+            lng = data.results[0].geometry.location.lng;
 
-            var geocodingUrl = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
-            var googleAPIkey = "AIzaSyBcLDPYV93T5_XF3TdfXBRANb9N1wkYn2k";
+            console.log("Latitude : " + lat);
+            console.log("Longitude : " + lng);
 
-            $.ajax({
-                type: "GET",
-                url: geocodingUrl + zip + "&key=" + googleAPIkey,
-                dataType: "json"
-            }).then(function (data) {
-                lat = data.results[0].geometry.location.lat;
-                lng = data.results[0].geometry.location.lng;
+            $("header, section").empty();
 
-                console.log("Latitude : " + lat);
-                console.log("Longitude : " + lng);
-
-                $("header, section").empty();
-
-                hikeApi(lat, lng);
-            });
-        }
-        else {
-            $("#modal1").show()
-        }
+            hikeApi(lat, lng);
+        });
     });
 
     function hikeApi(lat, lon) {
@@ -126,6 +151,11 @@ $(document).ready(function () {
                 var le = $("<p>").text("Length: " + results[i].length);
                 var s = $("<p>").text("Stars: " + results[i].stars);
 
+                var bn = $("<button id='gen'> Generate Playlist</button>").attr({
+						class: "btn genBtn",
+						value: results[i].difficulty,
+				})
+
                 var newID = results[i].id.toString();
 
                 var b = $("<div>").attr({ class: "btn favBtn", value: results[i].id })
@@ -150,10 +180,13 @@ $(document).ready(function () {
                 imgLink.append(image);
 
                 trailDiv.append(imgLink);
-                trailDiv.append(n, l, c, d, le, s, b, f);
+                trailDiv.append(n, l, c, d, le, s, b, f, bn);
+          
                 $("#trail-show").prepend(trailDiv);
-            }
-        })
-    }
+            };
+        });
+    };
+
+ 
 
 });
