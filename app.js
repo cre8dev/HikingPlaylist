@@ -67,29 +67,40 @@ $(document).ready(function () {
         });
     });
 
+    $("#modal1").hide();
+
     $(document).on("click", ".searchBtn", function () {
         var zip = $("#search").val().trim();
-        var lat;
-        var lng;
 
-        var geocodingUrl = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
-        var googleAPIkey = "AIzaSyBcLDPYV93T5_XF3TdfXBRANb9N1wkYn2k";
+        var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip);
+        if (isValidZip === true) {
+            $("#modal1").hide();
 
-        $.ajax({
-            type: "GET",
-            url: geocodingUrl + zip + "&key=" + googleAPIkey,
-            dataType: "json"
-        }).then(function (data) {
-            lat = data.results[0].geometry.location.lat;
-            lng = data.results[0].geometry.location.lng;
+            var lat;
+            var lng;
 
-            console.log("Latitude : " + lat);
-            console.log("Longitude : " + lng);
+            var geocodingUrl = "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
+            var googleAPIkey = "AIzaSyBcLDPYV93T5_XF3TdfXBRANb9N1wkYn2k";
 
-            $("header, section").empty();
+            $.ajax({
+                type: "GET",
+                url: geocodingUrl + zip + "&key=" + googleAPIkey,
+                dataType: "json"
+            }).then(function (data) {
+                lat = data.results[0].geometry.location.lat;
+                lng = data.results[0].geometry.location.lng;
 
-            hikeApi(lat, lng);
-        });
+                console.log("Latitude : " + lat);
+                console.log("Longitude : " + lng);
+
+                $("header, section").empty();
+
+                hikeApi(lat, lng);
+            });
+        }
+        else {
+            $("#modal1").show()
+        }
     });
 
     function hikeApi(lat, lon) {

@@ -1,14 +1,15 @@
 @import url(https://fonts.googleapis.com/css?family=Libre+Franklin);
 
+html { background: url(../images/hiking-main.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
 body {
-    background: url("./../images/hiking-main.jpg");
-    background-repeat: no-repeat;
-    background-size: 100%;
     font-family: 'Libre Franklin', sans-serif;
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    background-color: rgb(205, 206, 195);
 }
 
 .container {
@@ -81,4 +82,4 @@ h1 {
   .title, h2 {
       margin-top: -20px;
   }
-  }
+}

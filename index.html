@@ -14,29 +14,29 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 </head>
 
 <body>
-
     <div class="container">
 
-        <header class="title">
+        <section id="search-section">
             <h2>Hiking Playlist Generator</h2>
-        </header>
-        <h3 class="instructions">
             <h3>Enter Your Hiking Zipcode:
             </h3>
-
-            <section id="search-section">
-                <input id="search" type="search" required>
-                <button class="btn waves-effect waves-light" id="button" type="submit" name="action">Find Trails
-                    <i class="material-icons right">send</i>
-                </button>
-
-            </section>
-            <div id="trail-show">
-
-            </div>
+            <input id="search" type="search" placeholder="Enter location info" required>
+            <button class="btn waves-effect waves-light searchBtn" type="submit" name="action">Submit
+                <i class="material-icons right">send</i>
+            </button>
+            <div id="modal1" class="modal">
+    			<div class="modal-content">
+					<p>Please enter valid U.S. Zip Code</p>
+			</div>
+		</div>
+        </section>
+        <div id="trail-show">
+        </div>
     </div>
 
     <footer class="page-footer" id="footer">
@@ -44,9 +44,7 @@
             <div class="container">
                 © Copyright 2018
             </div>
-        </div>
     </footer>
-
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
