@@ -1,35 +1,40 @@
-@import url(https://fonts.googleapis.com/css?family=Libre+Franklin);
-
-html { background: url(../images/hiking-main.jpg) no-repeat center center fixed;
+html {
+    background: url(../images/hiking-main.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     background-size: cover;
+    font-family: 'Libre Franklin', sans-serif;
 }
 
-body {
-    font-family: 'Libre Franklin', sans-serif;
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+#navBar {
+    background-color: rgba(62, 73, 61, .8);
+    position: fixed;
+    top: 0;
 }
 
 .container {
     margin: 0 auto;
-    text-align: left;
+    text-align: center;
+    min-height: calc(100vh - 54px);
 }
 
-h1 {
-    color: white;
+#modal1 {
+    width: 400px;
+    text-align: center;
 }
 
-#search {
-    margin-top: 100px;
+#search2 {
     text-align: center;
     width: 200px;
 }
 
-#trail-show {
-    width: 100%;
-    background: lightgray;
+#search-section {
+    margin: 0;
+    padding: 5px 30px 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(236, 236, 228, 0.7);;
 }
 
 .image {
@@ -37,49 +42,56 @@ h1 {
     height: 300px;
 }
 
-.title, h2 {
+h3 {
     color: rgb(58, 61, 58) !important;
-    font-size: 10px;
- 
+    margin-bottom: 50px !important;
 }
 
-.instructions, h3 {
+h5 {
     color: rgb(32, 32, 32);
+}
+
+p {
+    margin: 0px;
 }
 
 #button {
    background-color: rgb(73, 87, 77);
 }
 
-#footer{
-    margin-top: 100%;
-    padding-top: 0;
+.favBtn {
+    margin: 10px;
+    display: inline;
 }
 
-#footer-copy {
-    color: rgb(31, 31, 31);
-    background-color: rgb(62, 73, 61);
-    padding: 4%;
+#gen {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#footer {
+    color: rgb(155, 155, 155);
+    background-color: rgba(62, 73, 61, .8);
+    padding: 18px;
+    width: 100%;
+    text-align: center;
+}
+
+.trails {
+    height: 560px;
 }
 
 #trail-show {
-    background-color: rgb(236, 236, 228);
+    margin-top: 65px;
+    margin-bottom: 0px;
+    padding-top:25px;
     text-align: center;
-    margin-top: 20px;
+    background-color: rgb(236, 236, 228, 0.8);
 }
 
-@media screen and (max-width: 860px) {
-    .instructions, h3{
-        max-width: 300px;
-}
-
-}
-
-@media screen and (max-width: 560px) {
-  .instructions, h3 {
-      margin-top: 200px;
-  }
-  .title, h2 {
-      margin-top: -20px;
-  }
+/* Media query for mobile responsive */
+@media screen and (max-width: 992px) {
+    #trail-show {
+        width: 370px;
+    }
 }

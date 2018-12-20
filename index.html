@@ -6,53 +6,56 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Hiking Playlist Generator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="./assets/css/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Libre+Franklin" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />-->
 </head>
 
 <body>
-    <div class="container">
+    <nav id="navBar">
+        <div class="nav-wrapper">
+            <form>
+                <div class="input-field">
+                    <input id="search" type="search" placeholder="Hiking Playlist Generator" required>
+                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                    <i class="material-icons">close</i>
+                </div>
+            </form>
+        </div>
+    </nav>
 
+    <div class="container">
         <section id="search-section">
-            <h2>Hiking Playlist Generator</h2>
-            <h3>Enter Your Hiking Zipcode:
-            </h3>
-            <input id="search" type="search" placeholder="Enter location info" required>
+            <h3>Hiking Playlist Generator</h3>
+            <h5>Enter Your Hiking Destination:</h5>
+            <input id="search2" type="search" placeholder="Enter location info" required>
             <button class="btn waves-effect waves-light searchBtn" type="submit" name="action">Submit
                 <i class="material-icons right">send</i>
             </button>
-            <div id="modal1" class="modal">
-    			<div class="modal-content">
-					<p>Please enter valid U.S. Zip Code</p>
-			</div>
-		</div>
         </section>
-        <div id="trail-show">
-
-            <div id="music-show">
-                
+        <div id="modal1" class="modal">
+            <div class="modal-content">
+                <p>Please enter valid 'City, State' or Zip Code</p>
             </div>
-
         </div>
+
+        <div id="trail-show" class="row">
+                <div id="music-show" class="col l6"></div>
+        </div>
+ 
     </div>
 
     <footer class="page-footer" id="footer">
-        <div class="footer-copyright" id="footer-copy">
-            <div class="container">
-                © Copyright 2018
-            </div>
+        © Copyright 2018 [TEAM NAME!!!]
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
     <script src="./assets/javascript/app.js"></script>
 
 
