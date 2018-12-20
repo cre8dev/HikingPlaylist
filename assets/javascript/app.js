@@ -1,4 +1,9 @@
 $(document).ready(function () {
+    // Initialize Modal
+    $('.modal').modal({ endingTop: '45%' });
+
+    $("#navBar").hide();
+    $("#trail-show").hide();
 
     // Initialize Firebase
     var config = {
@@ -16,6 +21,7 @@ $(document).ready(function () {
     var favID = [];
     var favCounter = [];
     var favorite = [];
+    var results;
 
     // Firebase watcher + initial loader
     database.ref().on("value", function (snapshot) {
@@ -27,6 +33,33 @@ $(document).ready(function () {
         // Handle the errors
     }, function (errorObject) {
         console.log("Errors handled: " + errorObject.code);
+    });
+
+    var easyPlaylist = '<iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="535" width="350" style="overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/out-walking/pl.53385af769204a0ab843ce245f2fb293"></iframe>';
+    var mediumPlaylist = '<iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="535" width="350" style="overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/pure-workout/pl.ad0ee1557e3e4feba314fd70f7982766?app=music"></iframe>';
+    var hardPlaylist = '<iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="535" width="350" style="overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/power-workout/pl.edc6571c1a5b49b1a8513673deaf18f5"></iframe>';
+
+    //Generate Playlist On Click
+    $(document).on("click", ".genBtn", function () {
+        $(this).text("Close Playlist").addClass("closeBtn").removeClass("genBtn");
+
+        if (this.value === "green" || this.value === "greenBlue") {
+            $("#music-show").html(easyPlaylist);
+        } else if (this.value === "blue") {
+            $("#music-show").html(mediumPlaylist);
+        } else {
+            $("#music-show").html(hardPlaylist);
+        }
+        $(".trails").hide();
+        $($("#t"+$(this).attr("data"))).fadeIn();
+        $("#music-show").fadeIn();
+    });
+
+    //Closing Playlist Button
+    $(document).on("click", ".closeBtn", function () {
+        $(this).text("Generate Playlist").removeClass("closeBtn").addClass("genBtn");
+        $("#music-show").fadeOut();
+        $(".trails").fadeIn();
     });
 
     $(document).on("click", ".favBtn", function () {
@@ -67,8 +100,24 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on("click", ".searchBtn", function () {
-        var zip = $("#search").val().trim();
+    $(".searchBtn").on("click", function () {
+        event.preventDefault();
+        geoCodingApi($("#search2").val().trim());
+    });
+
+    $("#search").on("keypress", function (e) {
+        if (e.which === 13) {
+            //Disable textbox to prevent multiple submit
+            $(this).attr("disabled", "disabled");
+
+            geoCodingApi($("#search").val().trim());
+
+            //Enable the textbox again if needed.
+            $(this).removeAttr("disabled");
+        }
+    });
+
+    function geoCodingApi(zip) {
         var lat;
         var lng;
 
@@ -80,17 +129,25 @@ $(document).ready(function () {
             url: geocodingUrl + zip + "&key=" + googleAPIkey,
             dataType: "json"
         }).then(function (data) {
-            lat = data.results[0].geometry.location.lat;
-            lng = data.results[0].geometry.location.lng;
+            if (data.results.length === 0) {
+                // Cannot find the location
+                $('#modal1').modal('open');
+            } else {
+                lat = data.results[0].geometry.location.lat;
+                lng = data.results[0].geometry.location.lng;
 
-            console.log("Latitude : " + lat);
-            console.log("Longitude : " + lng);
+                console.log("Latitude : " + lat);
+                console.log("Longitude : " + lng);
 
-            $("header, section").empty();
+                $("#navBar").fadeIn();
+                $("#trail-show").empty().fadeIn().html("<div id='music-show' class='col l6'></div>");
+                $("#music-show").fadeOut();
+                $("#search-section").fadeOut();
 
-            hikeApi(lat, lng);
+                hikeApi(lat, lng);
+            };
         });
-    });
+    };
 
     function hikeApi(lat, lon) {
 
@@ -103,94 +160,58 @@ $(document).ready(function () {
         }).then(function (response) {
             console.log(response);
 
-            var results = response.trails;
+            results = response.trails;
 
-            for (var i = 0; i < results.length; i++) {
-                var trailDiv = $("<div class='trails'>");
-
-                var n = $("<h6>").text(results[i].name);
-                var l = $("<p>").text("Location: " + results[i].location);
-                var c = $("<p>").text("Condition: " + results[i].conditionStatus);
-                var d = $("<p>").text("Difficulty: " + results[i].difficulty);
-                var le = $("<p>").text("Length: " + results[i].length);
-                var s = $("<p>").text("Stars: " + results[i].stars);
-
-                var button = $("<button id='gen'>Generate Playlist</button>");
-
-                var newID = results[i].id.toString();
-
-                var b = $("<div>").attr({ class: "btn favBtn", value: results[i].id })
-                if (favorite.indexOf(newID) === -1) {
-                    b.text("Like")
-                } else {
-                    b.text("Liked!")
-                };
-
-                var f = $("<div>").attr("id", results[i].id);
-                var position = favID.indexOf(newID);
-                if (position != -1) {
-                    f.text(favCounter[position] + " people liked this trail")
-                };
-
-                var imgLink = $("<a>");
-                imgLink.attr({ href: results[i].url, target: "_blank" });
-
-                var image = $("<img>");
-                image.attr("src", results[i].imgSmallMed);
-                image.addClass("image");
-                imgLink.append(image);
-
-                trailDiv.append(imgLink);
-                trailDiv.append(n, l, c, d, le, s, b, f);
-                trailDiv.append(button);
-                $("#trail-show").prepend(trailDiv);
-            }
-        })
-    }
-
-    $(".container").on("click", "#gen", function itunesAPI() {
-
-        var QueryURL = "https://itunes.apple.com/search";
-
-        $.ajax({
-            url: QueryURL,
-            crossDomain: true,
-            dataType: 'json',
-            data: {
-                term: 'random',
-                lang: 'en_us',
-                entity: 'mix, song',
-                limit: 5,
-                explicit: 'no',
-            },
-            method: 'GET'
-        }).then(function (data) {
-            playList = data.results;
-            console.log(playList);
-    
-            var hard = $("<h6>").text("Recomended Songs for Hard Trails")
-    
-            for (var i = 0; i < data.results.length; i++) {
-                var musicDiv = $("<div class='music'>");
-                var download = $("<a>").text("Full Song!")
-                download.attr("href", playList[i].trackViewUrl);
-                // var preview = $("<a class='link'>").attr("href", playList[i].previewUrl).text("Song Preview");
-                var name = $("<p>").text(playList[i].trackName);
-                var x = document.createElement("AUDIO");
-    
-                if (x.canPlayType("audio/mpeg")) {
-                    x.setAttribute("src", playList[i].previewUrl);
-                } else {
-                    x.setAttribute("src", playList[i].previewUrl);
-                }
-    
-                x.setAttribute("controls", "controls");
-    
-                musicDiv.append(name, x);
-                musicDiv.prepend(hard, download);
-                $("#music-show").prepend(musicDiv);
-            }
+            displayTrails();
         });
-    });
+    };
 
+    function displayTrails() {
+        for (var i = 0; i < results.length; i++) {
+            var trailDiv = $("<div class='trails col l6'>").attr("id", "t" + results[i].id);
+
+            var n = $("<h5>").text(results[i].name);
+            var l = $("<p>").text("Location: " + results[i].location);
+            var c = $("<p>").text("Condition: " + results[i].conditionStatus);
+            var d = $("<p>").text("Difficulty: " + results[i].difficulty);
+            var le = $("<p>").text("Length: " + results[i].length);
+            var s = $("<p>").text("Stars: " + results[i].stars);
+
+            var bn = $("<button>Generate Playlist</button>").attr({
+                data: results[i].id,
+                class: "btn genBtn waves-effect waves-light",
+                value: results[i].difficulty,
+            })
+
+            var newID = results[i].id.toString();
+
+            var b = $("<div>").attr({ class: "btn favBtn waves-effect waves-light", value: results[i].id })
+            if (favorite.indexOf(newID) === -1) {
+                b.text("Like")
+            } else {
+                b.text("Liked!")
+            };
+
+            var f = $("<div>").attr("id", results[i].id);
+            var position = favID.indexOf(newID);
+            if (position != -1) {
+                f.text(favCounter[position] + " people liked this trail")
+            };
+
+            var imgLink = $("<a>");
+            imgLink.attr({ href: results[i].url, target: "_blank" });
+
+            var image = $("<img>");
+            image.attr("src", results[i].imgSmallMed);
+            image.addClass("image");
+            imgLink.append(image);
+
+            trailDiv.append(imgLink);
+            trailDiv.append(n, l, c, d, le, s, b, bn, f);
+
+            $("#trail-show").prepend(trailDiv);
+            trailDiv.hide();
+            trailDiv.fadeIn(200 * i);
+        };
+    };
 });
