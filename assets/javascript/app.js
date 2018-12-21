@@ -9,6 +9,11 @@ $(document).ready(function () {
     $("#navBar").hide();
     $("#trail-show").hide();
 
+    // Initialize Playlists
+    var easy = ["out-walking/pl.53385af769204a0ab843ce245f2fb293", "hiking-music/pl.7d96545f7c794d76b115ae9a920610cf", "hiking-music/pl.u-oZylKAaI0XpYmD"];
+    var medium = ["pure-workout/pl.ad0ee1557e3e4feba314fd70f7982766", "hiking-music/pl.u-2aoq8ZYSzqleym", "hiking-music/pl.u-PDb4zlpsyDD5a3"];
+    var hard = ["power-workout/pl.edc6571c1a5b49b1a8513673deaf18f5", "outdoors/pl.u-Ymb0vVPUxjXGeq", "outdoors/pl.u-DdANrVqsmllNJp"];
+
     // Initialize Firebase
     var config = {
         apiKey: "AIzaSyBxDrdk8o6TGy3lVqgwyQz2jIz6zuBf-Qk",
@@ -46,13 +51,14 @@ $(document).ready(function () {
             "allow": "autoplay *; encrypted-media *;",
             frameborder: 0
         })
+        var trackNo = Math.floor(Math.random() * 3);
 
         if (this.value === "green" || this.value === "greenBlue") {
-            player.attr("src",itunesURL+"out-walking/pl.53385af769204a0ab843ce245f2fb293");
+            player.attr("src", itunesURL + easy[trackNo]);
         } else if (this.value === "blue") {
-            player.attr("src",itunesURL+"pure-workout/pl.ad0ee1557e3e4feba314fd70f7982766");
+            player.attr("src", itunesURL + medium[trackNo]);
         } else {
-            player.attr("src",itunesURL+"power-workout/pl.edc6571c1a5b49b1a8513673deaf18f5");
+            player.attr("src", itunesURL + hard[trackNo]);
         }
 
         $("#music-show").empty().append(player);
