@@ -1,4 +1,8 @@
 $(document).ready(function () {
+
+    $("#title, #search-section").hide();
+    $("#title, #search-section").fadeIn(2000);
+
     // Initialize Modal
     $('.modal').modal({ endingTop: '45%' });
 
@@ -103,6 +107,7 @@ $(document).ready(function () {
     $(".searchBtn").on("click", function () {
         event.preventDefault();
         geoCodingApi($("#search2").val().trim());
+        $("header").hide();
     });
 
     $("#search").on("keypress", function (e) {
@@ -185,7 +190,7 @@ $(document).ready(function () {
 
             var newID = results[i].id.toString();
 
-            var b = $("<div>").attr({ class: "btn favBtn waves-effect waves-light", value: results[i].id })
+            var b = $("<div>").attr({ class: "btn favBtn waves-effect waves-light red", value: results[i].id })
             if (favorite.indexOf(newID) === -1) {
                 b.text("Like")
             } else {
