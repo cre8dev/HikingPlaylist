@@ -5,6 +5,10 @@ html {
     font-family: 'Libre Franklin', sans-serif;
 }
 
+#title {
+    margin-top: 10rem;
+}
+
 #navBar {
     background-color: rgba(62, 73, 61, .8);
     position: fixed;
@@ -24,22 +28,30 @@ html {
 
 #search2 {
     text-align: center;
-    width: 200px;
+    width: 215px;
+    margin-right: 5px;
 }
 
 #search-section {
+    border-radius: 15px;
     margin: 0;
     padding: 5px 30px 30px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgb(236, 236, 228, 0.7);;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 .image {
+    border-radius: 10px;
     width: 350px;
     height: 300px;
+}
+
+h1 {
+    font-family: fantasy;
+    color: #555;
 }
 
 h3 {
@@ -48,7 +60,8 @@ h3 {
 }
 
 h5 {
-    color: rgb(32, 32, 32);
+    font-family: fantasy;
+    color: grey;
 }
 
 p {
@@ -82,10 +95,12 @@ p {
 }
 
 #trail-show {
+    border-radius: 10px;
     margin-top: 65px;
     margin-bottom: 0px;
     padding-top:25px;
     text-align: center;
+    color: rgb(73, 87, 77);
     background-color: rgb(236, 236, 228, 0.8);
 }
 

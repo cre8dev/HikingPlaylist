@@ -21,24 +21,31 @@
 <body>
     <nav id="navBar">
         <div class="nav-wrapper">
-            <form>
+        
                 <div class="input-field">
-                    <input id="search" type="search" placeholder="Hiking Playlist Generator" required>
+                    <input id="search" type="search" placeholder="Hiking Playlist Generator - enter destination" required>
                     <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                     <i class="material-icons">close</i>
                 </div>
-            </form>
+        
         </div>
     </nav>
-
+ 
     <div class="container">
+
+        <!-- <header id="title">
+        <h1>Hiking Playlist Generator</h1>
+        </header> -->
+
         <section id="search-section">
-            <h3>Hiking Playlist Generator</h3>
+                <h1>Hiking Playlist Generator</h1>
             <h5>Enter Your Hiking Destination:</h5>
-            <input id="search2" type="search" placeholder="Enter location info" required>
+            <form>
+            <input class="white" id="search2" type="search" placeholder="Enter City or Zip" required>
             <button class="btn waves-effect waves-light searchBtn" type="submit" name="action">Submit
                 <i class="material-icons right">send</i>
             </button>
+            </form>
         </section>
         <div id="modal1" class="modal">
             <div class="modal-content">
@@ -53,7 +60,7 @@
     </div>
 
     <footer class="page-footer" id="footer">
-        © Copyright 2018 [TEAM NAME!!!]
+        © Copyright 2018 Deportivo Lack A Talent
     </footer>
 
     <script src="./assets/javascript/app.js"></script>
