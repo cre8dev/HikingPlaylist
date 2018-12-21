@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
-    $("#title, #search-section").hide();
-    $("#title, #search-section").fadeIn(2000);
+    $("#search-section").hide();
+    $("#search-section").fadeIn(1600);
 
     // Initialize Modal
     $('.modal').modal({ endingTop: '45%' });
@@ -39,23 +39,26 @@ $(document).ready(function () {
         console.log("Errors handled: " + errorObject.code);
     });
 
-    var easyPlaylist = '<iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="535" width="350" style="overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/out-walking/pl.53385af769204a0ab843ce245f2fb293"></iframe>';
-    var mediumPlaylist = '<iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="535" width="350" style="overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/pure-workout/pl.ad0ee1557e3e4feba314fd70f7982766?app=music"></iframe>';
-    var hardPlaylist = '<iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="535" width="350" style="overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/power-workout/pl.edc6571c1a5b49b1a8513673deaf18f5"></iframe>';
-
     //Generate Playlist On Click
     $(document).on("click", ".genBtn", function () {
-        $(this).text("Close Playlist").addClass("closeBtn").removeClass("genBtn");
+        var itunesURL = "https://embed.music.apple.com/us/playlist/";
+        var player = $("<iframe>").attr({
+            "allow": "autoplay *; encrypted-media *;",
+            frameborder: 0
+        })
 
         if (this.value === "green" || this.value === "greenBlue") {
-            $("#music-show").html(easyPlaylist);
+            player.attr("src",itunesURL+"out-walking/pl.53385af769204a0ab843ce245f2fb293");
         } else if (this.value === "blue") {
-            $("#music-show").html(mediumPlaylist);
+            player.attr("src",itunesURL+"pure-workout/pl.ad0ee1557e3e4feba314fd70f7982766");
         } else {
-            $("#music-show").html(hardPlaylist);
+            player.attr("src",itunesURL+"power-workout/pl.edc6571c1a5b49b1a8513673deaf18f5");
         }
+
+        $("#music-show").empty().append(player);
         $(".trails").hide();
-        $($("#t"+$(this).attr("data"))).fadeIn();
+        $(this).text("Close Playlist").addClass("closeBtn").removeClass("genBtn");
+        $($("#t" + $(this).attr("data"))).fadeIn();
         $("#music-show").fadeIn();
     });
 
@@ -75,19 +78,19 @@ $(document).ready(function () {
             favorite.push(newID);
             favID.push(newID);
             favCounter.push(1);
-            $(this).text("Liked!");
+            $(this).text("♥ Liked!");
             $("#" + newID).text("1 people liked this trail")
         } else {
             var position2 = favorite.indexOf(newID);
             if (position2 === -1) {
                 favorite.push(newID);
                 favCounter[position]++;
-                $(this).text("Liked!");
+                $(this).text("♥ Liked!");
                 $("#" + newID).text(favCounter[position] + " people liked this trail");
             } else {
                 favorite.splice(position2, 1);
                 favCounter[position]--;
-                $(this).text("Like");
+                $(this).text("♡ Like");
                 $("#" + newID).text(favCounter[position] + " people liked this trail");
                 if (favCounter[position] === 0) {
                     favID.splice(position, 1);
@@ -141,9 +144,6 @@ $(document).ready(function () {
                 lat = data.results[0].geometry.location.lat;
                 lng = data.results[0].geometry.location.lng;
 
-                console.log("Latitude : " + lat);
-                console.log("Longitude : " + lng);
-
                 $("#navBar").fadeIn();
                 $("#trail-show").empty().fadeIn().html("<div id='music-show' class='col l6'></div>");
                 $("#music-show").fadeOut();
@@ -163,10 +163,7 @@ $(document).ready(function () {
             url: queryURL,
             method: "GET"
         }).then(function (response) {
-            console.log(response);
-
             results = response.trails;
-
             displayTrails();
         });
     };
@@ -192,9 +189,9 @@ $(document).ready(function () {
 
             var b = $("<div>").attr({ class: "btn favBtn waves-effect waves-light red", value: results[i].id })
             if (favorite.indexOf(newID) === -1) {
-                b.text("Like")
+                b.text("♡ Like")
             } else {
-                b.text("Liked!")
+                b.text("♥ Liked!")
             };
 
             var f = $("<div>").attr("id", results[i].id);

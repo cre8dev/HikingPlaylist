@@ -44,14 +44,17 @@ html {
     border-radius: 10px;
 }
 
-img {
-    border-radius: 10px;
-}
-
 .image {
     border-radius: 10px;
     width: 350px;
     height: 300px;
+}
+
+iframe {
+    height: 535px;
+    width: 350px;
+    overflow: hidden;
+    background: transparent;
 }
 
 h1 {
