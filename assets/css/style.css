@@ -96,6 +96,9 @@ p {
     padding: 18px;
     width: 100%;
     text-align: center;
+    position: fixed;
+    bottom: 0;
+    z-index: 9999;
 }
 
 .trails {
@@ -117,5 +120,8 @@ p {
 @media screen and (max-width: 992px) {
     #trail-show {
         width: 370px;
+    }
+    #footer {
+        position: relative;
     }
 }
