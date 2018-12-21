@@ -35,6 +35,11 @@ html {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgb(236, 236, 228, 0.7);;
+    border-radius: 10px;
+}
+
+img {
+    border-radius: 10px;
 }
 
 .image {
@@ -87,6 +92,7 @@ p {
     padding-top:25px;
     text-align: center;
     background-color: rgb(236, 236, 228, 0.8);
+    border-radius: 10px;
 }
 
 /* Media query for mobile responsive */
