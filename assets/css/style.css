@@ -108,7 +108,7 @@ p {
 #trail-show {
     border-radius: 10px;
     margin-top: 65px;
-    margin-bottom: 0px;
+    margin-bottom: 57px;
     padding-top:25px;
     text-align: center;
     color: rgb(73, 87, 77);
@@ -120,6 +120,7 @@ p {
 @media screen and (max-width: 992px) {
     #trail-show {
         width: 370px;
+        margin-bottom: 0px;
     }
     #footer {
         position: relative;
