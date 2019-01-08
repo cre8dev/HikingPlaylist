@@ -75,11 +75,13 @@ $(document).ready(function () {
         $(".trails").fadeIn();
     });
 
+    // Favorite button
     $(document).on("click", ".favBtn", function () {
 
         var newID = $(this).attr("value");
         var position = favID.indexOf(newID);
 
+        // Check how many times the button has been clicked
         if (position === -1) {
             favorite.push(newID);
             favID.push(newID);
@@ -113,12 +115,14 @@ $(document).ready(function () {
         });
     });
 
+    // Search bar
     $(".searchBtn").on("click", function () {
         event.preventDefault();
         geoCodingApi($("#search2").val().trim());
         $("header").hide();
     });
 
+    // If 'Enter' key has been pressed
     $("#search").on("keypress", function (e) {
         if (e.which === 13) {
             //Disable textbox to prevent multiple submit
@@ -131,6 +135,7 @@ $(document).ready(function () {
         }
     });
 
+    // Using GeoCoding API to convert location data to logitude and latitude
     function geoCodingApi(zip) {
         var lat;
         var lng;
@@ -160,6 +165,7 @@ $(document).ready(function () {
         });
     };
 
+    // Using Hiking API to get info about Hiking trails
     function hikeApi(lat, lon) {
 
         var trailKey = "200396711-e807f4a3a7208434b577326e19600e21";
@@ -170,10 +176,12 @@ $(document).ready(function () {
             method: "GET"
         }).then(function (response) {
             results = response.trails;
+            console.log(results);
             displayTrails();
         });
     };
 
+    // Display trails info
     function displayTrails() {
         for (var i = 0; i < results.length; i++) {
             var trailDiv = $("<div class='trails col l6'>").attr("id", "t" + results[i].id);
@@ -210,7 +218,11 @@ $(document).ready(function () {
             imgLink.attr({ href: results[i].url, target: "_blank" });
 
             var image = $("<img>");
-            image.attr("src", results[i].imgSmallMed);
+            if (results[i].imgSmallMed === "") {
+                image.attr("src", "./assets/images/no_image.jpg");
+            } else {
+                image.attr("src", results[i].imgSmallMed);
+            };
             image.addClass("image");
             imgLink.append(image);
 
