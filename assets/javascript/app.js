@@ -16,12 +16,12 @@ $(document).ready(function () {
 
     // Initialize Firebase
     var config = {
-        apiKey: "AIzaSyBxDrdk8o6TGy3lVqgwyQz2jIz6zuBf-Qk",
-        authDomain: "aka-joe-project.firebaseapp.com",
-        databaseURL: "https://aka-joe-project.firebaseio.com",
-        projectId: "aka-joe-project",
-        storageBucket: "aka-joe-project.appspot.com",
-        messagingSenderId: "682758063555"
+        apiKey: "AIzaSyDkM0haGwLMjz4QlsMomXfhLq2doAbOuX8",
+        authDomain: "aka-joe-project1.firebaseapp.com",
+        databaseURL: "https://aka-joe-project1.firebaseio.com",
+        projectId: "aka-joe-project1",
+        storageBucket: "aka-joe-project1.appspot.com",
+        messagingSenderId: "644601161185"
     };
     firebase.initializeApp(config);
 
